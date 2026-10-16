@@ -1,64 +1,120 @@
-/* Edit only this block. Leave a value empty ("") to hide it. */
 const SITE = {
-  whatsapp: "+917020581028",     
-  phone: "+917020581028",        
-  email: "stellarbotsandbuilders@gmail.com",        
-  instagram: "stellar_bots_builders",    
-  websitesUrl: "",  /* full link to your website building page, for example https://example.netlify.app */
-  area: "India"          /* for example: Serving businesses in Duliajan and nearby. */
+  whatsapp: "+917020581028",
+  phone: "+917020581028",
+  email: "stellarbotsandbuilders@gmail.com",
+  instagram: "stellar_bots_builders",
+  websitesUrl: "",
+  area: "India"
 };
 
-const MESSAGE = "Hi Stellar Bots and Builders, I would like to know more about a chat assistant for my business.";
-const missing = "[stellarshubh25@gmail.com]";
+const MESSAGE =
+  "Hi Stellar Bots and Builders, I would like to know more about a chat assistant for my business.";
+
+const missing = "[contact email not configured]";
 
 document.querySelectorAll("[data-fill='email']").forEach(function (el) {
   el.textContent = SITE.email || missing;
 });
+
 document.querySelectorAll("[data-year]").forEach(function (el) {
   el.textContent = new Date().getFullYear();
 });
+
 document.querySelectorAll("[data-area]").forEach(function (el) {
-  el.textContent = SITE.area;
+  el.textContent = SITE.area || "";
 });
 
 if (SITE.websitesUrl) {
-  document.querySelectorAll(".js-web, .js-web-nav").forEach(function (a) {
-    a.href = SITE.websitesUrl;
-    a.target = "_blank";
-    a.rel = "noopener";
-    a.hidden = false;
+  document.querySelectorAll(".js-web, .js-web-nav").forEach(function (link) {
+    link.href = SITE.websitesUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.hidden = false;
   });
 }
 
-var list = document.getElementById("contact-list");
-if (list) {
-  function add(label, href, primary) {
-    var li = document.createElement("li");
-    var a = document.createElement("a");
-    a.className = "btn" + (primary ? " primary" : "");
-    a.href = href;
-    a.textContent = label;
-    if (href.indexOf("http") === 0) { a.target = "_blank"; a.rel = "noopener"; }
-    li.appendChild(a);
-    list.appendChild(li);
+const contactList = document.getElementById("contact-list");
+
+if (contactList) {
+  function addContact(label, href, primary) {
+    const item = document.createElement("li");
+    const link = document.createElement("a");
+
+    link.className = "btn" + (primary ? " primary" : "");
+    link.href = href;
+    link.textContent = label;
+
+    if (href.indexOf("http") === 0) {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    }
+
+    item.appendChild(link);
+    contactList.appendChild(item);
   }
-  var wa = "";
+
+  let whatsappUrl = "";
+
   if (SITE.whatsapp) {
-    wa = "https://wa.me/" + SITE.whatsapp.replace(/\D/g, "") + "?text=" + encodeURIComponent(MESSAGE);
-    add("WhatsApp", wa, true);
+    whatsappUrl =
+      "https://wa.me/" +
+      SITE.whatsapp.replace(/\D/g, "") +
+      "?text=" +
+      encodeURIComponent(MESSAGE);
+
+    addContact("Message us on WhatsApp", whatsappUrl, true);
   }
-  if (SITE.phone) add("Call " + SITE.phone, "tel:" + SITE.phone.replace(/\s/g, ""));
-  if (SITE.email) add("Email", "mailto:" + SITE.email + "?subject=" + encodeURIComponent("Chat assistant enquiry"));
-  if (SITE.instagram) add("Instagram", "https://instagram.com/" + SITE.instagram.replace("@", ""));
-  if (!list.children.length) {
-    var li = document.createElement("li");
-    li.textContent = "Contact details have not been added yet.";
-    list.appendChild(li);
-    console.warn("Add your contact details in the SITE block of script.js before launching.");
+
+  if (SITE.phone) {
+    addContact("Call us", "tel:" + SITE.phone.replace(/[^\d+]/g, ""));
   }
-  if (wa) {
-    document.querySelectorAll(".js-wa").forEach(function (a) {
-      a.href = wa; a.target = "_blank"; a.rel = "noopener";
+
+  if (SITE.email) {
+    addContact(
+      "Send an email",
+      "mailto:" +
+        SITE.email +
+        "?subject=" +
+        encodeURIComponent("Stellar Bots and Builders enquiry")
+    );
+  }
+
+  if (SITE.instagram) {
+    addContact(
+      "Instagram",
+      "https://instagram.com/" + SITE.instagram.replace("@", "")
+    );
+  }
+
+  if (!contactList.children.length) {
+    const item = document.createElement("li");
+    item.textContent = "Contact details have not been added yet.";
+    contactList.appendChild(item);
+  }
+
+  if (whatsappUrl) {
+    document.querySelectorAll(".js-wa").forEach(function (link) {
+      link.href = whatsappUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
     });
   }
 }
+
+const menuButton = document.querySelector(".menu-button");
+const navigation = document.querySelector("#site-nav");
+
+menuButton?.addEventListener("click", () => {
+  const isOpen = navigation.classList.toggle("open");
+
+  menuButton.setAttribute("aria-expanded", String(isOpen));
+  menuButton.textContent = isOpen ? "Close" : "Menu";
+});
+
+navigation?.querySelectorAll("a").forEach(function (link) {
+  link.addEventListener("click", function () {
+    navigation.classList.remove("open");
+    menuButton?.setAttribute("aria-expanded", "false");
+    menuButton.textContent = "Menu";
+  });
+});
