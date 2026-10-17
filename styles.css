@@ -45,6 +45,8 @@ body {
 }
 
 header {
+  position: relative;
+  z-index: 10;
   background: var(--paper);
   border-bottom: 1px solid var(--line);
 }
@@ -119,7 +121,7 @@ footer a:hover {
 }
 
 .tagline {
-  color: #9a482c;
+  color: #de6840;
 }
 
 .hero h1,
@@ -465,12 +467,12 @@ footer div:last-child {
     font: 600 0.83rem "DM Sans";
   }
 
-  nav {
+    nav {
     display: none;
     position: absolute;
-    top: 64px;
-    left: 17px;
-    right: 17px;
+    top: 100%;
+    left: 0;
+    right: 0;
     z-index: 3;
     flex-direction: column;
     gap: 12px;
@@ -656,6 +658,7 @@ header .header-row {
   }
 }
 .header-row {
+  position: relative;
   height: 76px;
   min-height: 76px;
 }
@@ -671,7 +674,7 @@ header .header-row {
 .logo-link img {
   display: block;
   width: auto;
-  height: 2b52px;   /* Change only this to resize the logo */
+  height: 252px;   /* Change only this to resize the logo */
   max-width: 100%;
   object-fit: contain;
 }
@@ -730,4 +733,54 @@ header .header-row {
 .hero-grid > .chat-input,
 .hero-grid > .typing-indicator {
   display: none !important;
+}
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 70px;
+}
+
+.plan {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.plan .label {
+  margin: 0 0 14px;
+  color: #526a4c;
+}
+
+.plan h3 {
+  margin: 0 0 10px;
+  font-size: 1.4rem;
+  letter-spacing: -0.04em;
+}
+
+.plan p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.plan .plan-price {
+  margin: 18px 0 22px;
+  padding-top: 16px;
+  color: var(--ink);
+  border-top: 1px solid var(--line);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.plan .btn {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+@media (max-width: 760px) {
+  .plans {
+    margin-top: 42px;
+  }
 }
